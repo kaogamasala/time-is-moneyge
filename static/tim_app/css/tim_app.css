@@ -1,0 +1,26 @@
+@charset "utf-8";
+
+/*datatables*/
+.container {
+    max-width: 100%;
+}
+#data-table table {
+  		border-collapse: collapse;		
+  	}
+td, th {
+  		text-align: center;
+  	}
+
+
+
+#table-members {
+  display: flex;
+  /*justify-content: space-around;*/
+  /*margin: 30px;*/
+}
+#table-members > div {
+  width: 50%;
+}
+#table-members table {
+  width: 100%;
+}

@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% block title %}<title>ユーザー登録</title>{% endblock %}
+{% block content %}
+<p></p>
+<div class="row justify-content-center">
+  <div class="col-lg-8 col-md-10 col-sn-12">
+    <div class="card-header">
+      <h4 class="my-0 font-weight-normal">ユーザー登録</h4>
+    </div>
+    <div class="card-body">
+      <form method="post" novalidate>
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        {% buttons %}
+        <button type="submit" class="btn btn-primary btn-block">ユーザー登録</button>
+        {% endbuttons %}
+      </form>
+    </div>
+    <div class="card-footer text-muted text-center">ログインは<a href="{% url 'login' %}">こちら</a>
+    </div>
+  </div>
+</div>
+
+
+<!--デフォルトユーザー登録
+<h1>Sign up</h1>
+<section class="common-form">
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="submit">Sign up</button>
+    </form>
+</section>-->
+{% endblock %}

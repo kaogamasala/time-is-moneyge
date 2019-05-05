@@ -1,0 +1,351 @@
+{% extends 'base.html' %}
+{% load timedelta_filter %}
+{% load humanize %}
+{% block content %}
+{% load static %}
+
+
+
+<!--START LATEST REGISTER-->
+<div class="container">
+	<div class="row justify-content-center mb-2">
+		<div class = "mr-1 text-danger font-weight-bold">最新の登録：</div>
+		{% if last_register.evening_overtime == None %}
+		<div class = "mr-4">出社時間 {{ last_register.start_datetime |default:0 }}</div>
+		<div>朝の時間外労働 {{ last_register.morning_overtime |default:0|timedelta:"{hours}:{minutes2}:{seconds2}" }}</div>
+		{% elif last_register.morning_overtime == None %}
+		<div class = "mr-4">退社時間 {{ last_register.end_datetime |default:0 }}</div>
+		<div>夜の時間外労働 {{ last_register.evening_overtime |default:0|timedelta:"{hours}:{minutes2}:{seconds2}" }}</div>
+		{% endif %}	
+	</div>
+</div>
+<!--END LATEST REGISTER-->
+
+<!--START HOURLY_WAGE, OVERTIME, TOTAL_PRICE-->
+<div class="container">
+	<div class="row justify-content-center">
+		<table class="table table-sm table-bordered col-lg-4 col-md-8 col-sm-12">
+			<thead>
+				<tr class="bg-dark text-white">
+					<th>現在の時給</th>
+					<th>今月の残業時間</th>
+					<th>今月の残業金額</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td class="h5">¥{{ current_hourly_wage|intcomma }}</td>
+					<td class="h5">{{ total_overtime_of_thismonth }}</td>
+					<td class="h5">¥{{ total_overtime_amount|intcomma }}</td><!--humanize-->
+				</tr>
+			</tbody>
+		</table>	
+	</div>
+</div>
+<!--END HOURLY_WAGE, OVERTIME, TOTAL_PRICE-->
+
+<!--START BUTTON-->
+<div class="container">
+	<div class="row justify-content-center">
+		<a class="mr-2 mb-3 ml-2 btn btn-primary" role="button" href="{% url 'tim_app:morning_add' user.id %}">おはよう</a>
+		<a class="mr-2 mb-3 ml-2 btn btn-primary" role="button" href="{% url 'tim_app:evening_add' user.id %}">お疲れ様</a>
+		<a class="mr-2 mb-3 ml-2 btn btn-primary" role="button" href="{% url 'tim_app:generate_pdf' user.id %}">PDF作成</a>
+		<a class="mr-2 mb-3 ml-2 btn btn-primary" role="button" href="{% url 'tim_app:paid_leave' user.id %}">有給登録</a>
+		<a class="mr-2 mb-3 ml-2 btn btn-primary" role="button" href="{% url 'tim_app:hourly_wage_add' user.id %}">時給登録</a>
+	</div>
+</div>
+<!--END BUTTON-->
+
+<!--START WIDE SCREEN DISPLAY MAIN_TABLE-->
+<div class="container">
+	<div id="table-members">
+		<div class="d-none d-xl-inline col-lg-6 col-md-6 col-sm-6">
+			<h5 class="text-center font-weight-bold textcolor" style="color: #666666;">出社時間</h5>
+			<div class="table-responsive">
+				<div class="table-1">
+					<table border="1" align="left" id="data-table1" class=" table-sm table-bordered table-striped">
+						<thead>
+							<tr class="bg-dark text-white">
+								<th>id</th>
+								<th>日付</th>
+								<th>朝のメモ</th>
+								<th>出社時間</th>
+								<th>朝時間外</th>
+								<th>朝詳細</th>
+							</tr>
+						</thead>
+						<tbody>
+						{% for morning_list in morning_list %}
+							<tr>
+								<td>{{ morning_list.id }}</td>
+								<td>{{ morning_list.date }}</td>
+								<td>{{ morning_list.morning_word|default:"おはようございます"|truncatechars:5 }}</td>
+								<td>{{ morning_list.start_datetime }}</td>
+								<td>{{ morning_list.morning_overtime|default:0|timedelta:"{hours}:{minutes2}:{seconds2}" }}</td>
+								<td><a class="btn-sm btn-primary" href="{% url 'tim_app:detail' overtime_id=morning_list.id %}">詳細</a></td>
+							</tr>
+						{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="d-none d-xl-inline col-lg-6 col-md-6 col-sm-6">
+			<h5 class="text-center font-weight-bold textcolor" style="color: #666666;">退社時間</h5>
+			<div class="table-responsive">
+				<div class="table-2">
+					<table border="1" id="data-table2" class=" table-sm table-bordered table-striped">
+						<thead>
+							<tr class="bg-dark text-white"> 
+								<th>id</th>
+								<th>日付</th>
+								<th>夜のメモ</th>
+								<th>退社時間</th>
+								<th>夜時間外</th>
+								<th>残業時間</th>
+								<th>労働時間</th>
+								<th>夜詳細</th>
+							</tr>
+						</thead>
+						<tbody>
+						{% for evening_list in evening_list %}	
+							<tr>	
+								<td>{{ evening_list.id }}</td>
+								<td>{{ evening_list.date }}</td>
+								<td>{{ evening_list.evening_word|default:"お疲れ様でした"|truncatechars:5 }}</td>
+								<td>{{ evening_list.end_datetime }}</td>
+								<td>{{ evening_list.evening_overtime|default:0|timedelta:"{hours}:{minutes2}:{seconds2}" }}</td>
+								<td>{{ evening_list.todays_overtime|default:0|timedelta:"{hours}:{minutes2}:{seconds2}" }}</td>
+								<td>{{ evening_list.working_time|default:0|timedelta:"{hours}:{minutes2}:{seconds2}" }}</td>
+								<td><a class="btn-sm btn-primary" href="{% url 'tim_app:detail' overtime_id=evening_list.id %}">詳細</a></td>
+							</tr>	
+						{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!--END WIDE SCREEN DISPLAY MAIN_TABLE-->
+<!--START LARGE to XS SCREEN DISPLAY MAIN_TABLE-->
+<div class="container">
+	<div id="">
+		<div class="d-inline d-xl-none col-lg-12 col-md-12 col-sm-12">
+			<h5 class="text-center font-weight-bold textcolor" style="color: #666666;">出社時間</h5>
+			<div class="table-responsive">
+				<div class="table-3">
+					<table border="1" id="data-table3" class=" table-sm table-bordered table-striped">
+						<thead>
+							<tr class="bg-dark text-white">
+								<th>id</th>
+								<th>日付</th>
+								<th>朝のメモ</th>
+								<th>出社時間</th>
+								<th>朝時間外</th>
+								<th>朝詳細</th>
+							</tr>
+						</thead>
+						<tbody>
+						{% for morning_list in morning_list %}
+							<tr>
+								<td>{{ morning_list.id }}</td>
+								<td>{{ morning_list.date }}</td>
+								<td>{{ morning_list.morning_word|default:"おはようございます"|truncatechars:5 }}</td>
+								<td>{{ morning_list.start_datetime }}</td>
+								<td>{{ morning_list.morning_overtime|default:0|timedelta:"{hours}:{minutes2}:{seconds2}" }}</td>
+								<td><a class="btn-sm btn-primary" href="{% url 'tim_app:detail' overtime_id=morning_list.id %}">詳細</a></td>
+							</tr>
+						{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="d-inline d-xl-none col-lg-12 col-md-12 col-sm-12">
+			<h5 class="text-center font-weight-bold textcolor" style="color: #666666;">退社時間</h5>
+			<div class="table-responsive">
+				<div class="table-4">
+					<table border="1" id="data-table4" class=" table-sm table-bordered table-striped">
+						<thead>
+							<tr class="bg-dark text-white"> 
+								<th>id</th>
+								<th>日付</th>
+								<th>夜のメモ</th>
+								<th>退社時間</th>
+								<th>夜時間外</th>
+								<th>残業時間</th>
+								<th>労働時間</th>
+								<th>夜詳細</th>
+							</tr>
+						</thead>
+						<tbody>
+						{% for evening_list in evening_list %}	
+							<tr>	
+								<td>{{ evening_list.id }}</td>
+								<td>{{ evening_list.date }}</td>
+								<td>{{ evening_list.evening_word|default:"お疲れ様でした"|truncatechars:5 }}</td>
+								<td>{{ evening_list.end_datetime }}</td>
+								<td>{{ evening_list.evening_overtime|default:0|timedelta:"{hours}:{minutes2}:{seconds2}" }}</td>
+								<td>{{ evening_list.todays_overtime|default:0|timedelta:"{hours}:{minutes2}:{seconds2}" }}</td>
+								<td>{{ evening_list.working_time|default:0|timedelta:"{hours}:{minutes2}:{seconds2}" }}</td>
+								<td><a class="btn-sm btn-primary" href="{% url 'tim_app:detail' overtime_id=evening_list.id %}">詳細</a></td>
+							</tr>	
+						{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- END LARGE to XS SCREEN DISPLAY MAIN_TABLE -->
+
+<!-- <div class="container">
+	<div class="row justify-content-center">
+		<div class="col-lg-12 col-md-12 col-sm-12">
+			<div class="card-body">
+				<div class="table-responsive">
+					<table id="data-table" class="table table-sm table-bordered table-striped">
+						<thead>
+							<tr class="bg-dark text-white">
+								<th>id</th>
+								<th>日付</th>
+								<th>朝のメモ</th>
+								<th>出社時間</th>
+								<th>朝時間外</th>
+								<th>朝詳細</th>
+								<th>夜のメモ</th>
+								<th>退社時間</th>
+								<th>夜時間外</th>
+								<th>残業時間</th>
+								<th>労働時間</th>
+								<th>夜詳細</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for total_list in total_list %}
+							{% if total_list.morning_overtime == None %}
+							<tr>
+								<td>{{ total_list.id }}</td>
+								<td>{{ total_list.date }}</td>
+								<td>{{ total_list.get_previous_by_date.morning_word|default:"おはようございます"|truncatechars:5 }}</td>
+								<td>{{ total_list.get_previous_by_date.start_datetime }}</td>
+								<td>{{ total_list.get_previous_by_date.morning_overtime|default:0|timedelta:"{hours}:{minutes2}:{seconds2}" }}</td>
+								<td><a class="btn-sm btn-primary" href="{% url 'tim_app:detail' total_list.get_previous_by_date.id %}">詳細</a></td>
+								<td>{{ total_list.evening_word|default:"お疲れ様でした"|truncatechars:5 }}</td>
+								<td>{{ total_list.end_datetime }}</td>
+								<td>{{ total_list.evening_overtime|default:0|timedelta:"{hours}:{minutes2}:{seconds2}" }}</td>
+								<td>{{ total_list.todays_overtime|default:0|timedelta:"{hours}:{minutes2}:{seconds2}" }}</td>
+								<td>{{ total_list.working_time|default:0|timedelta:"{hours}:{minutes2}:{seconds2}" }}</td>
+								<td><a class="btn-sm btn-primary" href="{% url 'tim_app:detail' overtime_id=total_list.id %}">詳細</a></td>
+							</tr>
+							{% endif %}
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div> -->
+<!--END MAIN_TABLE-->
+
+<!--START PAID_LEAVE_TABLE-->
+<div class="container">
+	<div class="row justify-content-center">
+		<div class="col-lg-12 col-md-12 col-sm-12">
+			<div class="card-body">
+				<div class="table-responsive">
+					<h5 class="text-center font-weight-bold textcolor" style="color: #666666;">今月の有給</h5>
+					<table id="" class="table table-sm table-bordered table-striped">
+						<thead>
+							<tr class="bg-dark text-white">
+								<th>作成日</th>
+								<th>有給休暇日</th>
+								<th>MEMO</th>
+								<th>削除</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for paid_leave_list in paid_leave_list %}
+							<tr>
+								<td class="align-middle">{{ paid_leave_list.created_datetime }}</td>
+								<td class="align-middle">{{ paid_leave_list.paid_leave_date }}</td>
+								<td class="align-middle">{{ paid_leave_list.memo|default:"私用のため" }}</td>
+								<td class="align-middle"><form method="post" action="{% url 'tim_app:paid_leave_delete' paid_leave_id=paid_leave_list.id %}">{% csrf_token %}
+								<button type="submit" class="btn-sm btn-primary" role="button" onclick='return confirm("本当に削除しますか？");'>削除</button>
+								</form></td>
+							</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+	</div>
+</div>
+<!--END PAID_LEAVE_TABLE-->
+
+<!-- START BAR GRAPH -->
+<div class="container">
+	<div class="row justify-content-center">
+		<div class="col-lg-12 col-md-12 col-sm-12">
+			<div class="card-body">
+				<canvas id="bar-chart" height="70px"></canvas>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+var ctx = document.getElementById("bar-chart");
+var myRadarChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月',],
+        datasets: [
+            {   
+            	label: "{{ user.last_name }}{{ user.first_name }}",
+                data:["{{ sort_january }}","{{ sort_february }}","{{ sort_march }}","{{ sort_april }}","{{ sort_may }}","{{ sort_june }}","{{ sort_july }}","{{ sort_august }}","{{ sort_september }}","{{ sort_october }}","{{ sort_november }}","{{ sort_december }}"],
+                backgroundColor: 'rgba(255, 99, 132, 0.6)',
+                borderColor: 'rgba(255, 99, 132, 0.9)',
+                pointBackgroundColor: 'rgba(255, 99, 132, 0.9)',
+                pointBorderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 3,
+                pointRadius: 3,
+            }]},
+        options: {
+        	responsive: true,                  //グラフ自動設定
+            legend: {                          //凡例設定
+                display: false                 //表示設定
+           	},
+			title: {
+		        display: true,
+		        fontSize: 19,
+		        text: '月別残業時間'
+			},
+      		scales: {
+        		yAxes: [{
+          			ticks: {
+		            	suggestedMax: 50,
+		            	suggestedMin: 0,
+		            	stepSize: 10,
+		            	callback: function(value, index, values){
+		              	return  value +  '時間'
+		            	}
+          			}
+        		}]
+      		},
+   		 }   
+});
+</script>
+<!-- END BAR GRAPH -->
+
+	<!--{% if messages %}
+	<ul class="messages">
+    	{% for message in messages %}
+    	<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    	{% endfor %}
+	</ul>
+	{% endif %}-->
+
+{% endblock %}

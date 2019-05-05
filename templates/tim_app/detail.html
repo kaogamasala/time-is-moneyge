@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load timedelta_filter %}
+{% load bootstrap4%}
+{% block content %}
+{% load static %}
+
+<div class="container">
+
+	<!--一覧に戻る-->
+	<div class="row justify-content-center mb-4">
+		<a class="btn btn-primary mr-4" role="button" href="{% url 'tim_app:timeismoneyge_list' user.id %}">ホームに戻る</a>
+	
+		<!--編集画面へ遷移-->
+		{% if overtime_detail.evening_overtime == None %}
+		<a class="btn btn-primary mr-4" role="button" href="{% url 'tim_app:morning_edit' overtime_detail.pk %}">編集画面</a>
+		{% else %}
+		<a class="btn btn-primary mr-4" role="button" href="{% url 'tim_app:evening_edit' overtime_detail.pk %}">編集画面</a>
+		{% endif %}
+		
+		<!--削除機能-->
+		<form method="post" action="{% url 'tim_app:delete' overtime_detail.pk %}">{% csrf_token %}
+			<button type="submit" class="btn btn-primary mr-5" role="button" onclick='return confirm("本当に削除しますか？");'>削除</button>
+		</form>
+	</div>
+
+	<!--朝の詳細表示-->
+	<div class="row justify-content-center lead">
+		<div id = "morning_list">
+			<ul class="list-unstyled">
+				<li>日付　　　　　　　　{{ overtime_detail.date }}</li>
+				<li>おはようの一言　　　{{ overtime_detail.morning_word|default:"おはようございます" }}</li>
+				<li>出社時間　　　　　　{{ overtime_detail.start_datetime }}</li>
+				<li class ="morning_hide">朝の時間外労働　　　{{ overtime_detail.morning_overtime }}</li>
+			</ul>
+		</div>
+
+		<!--夜の詳細表示-->
+		<div id = "evening_list">
+			<ul class="list-unstyled">
+				<li>日付　　　　　　　　{{ overtime_detail.date }}</li>
+				<li>お疲れ様の一言　　　{{ overtime_detail.evening_word|default:"お疲れ様でした" }}</li>
+				<li>退社時間　　　　　　{{ overtime_detail.end_datetime }}</li>
+				<li class ="evening_hide">夜の時間外労働　　　{{ overtime_detail.evening_overtime }}</li>
+			</ul>
+		</div>
+	</div>
+	<!--朝の詳細表示-->
+	<!--<div class="row justify-content-center">
+		<div id = "morning_list">
+			<dl class="row">
+				<dt class="col-sm-4 text-right">日付</dt>
+				<dd class="col-sm-8 text-center">{{ overtime_detail.date }}</dd>
+				<dt class="col-sm-3">おはようの一言</dt>
+				<dd class="col-sm-9">{{ overtime_detail.morning_word|default:"おはようございます" }}</dd>
+				<dt class="col-sm-3">出社時間</dt>
+				<dd class="col-sm-9">{{ overtime_detail.start_datetime }}</dd>
+				<dt class ="morning_hide col-sm-3">朝の時間外労働</dt>
+				<dd class="col-sm-9">{{ overtime_detail.morning_overtime }}</dd>
+			</dl>
+		</div>-->
+
+		<!--夜の詳細表示-->
+		<!--<div id = "evening_list">
+			<dl class="row">
+				<dt class="col-sm-3">日付</dt>
+				<dd class="col-sm-9">{{ overtime_detail.date }}</dd>
+				<dt class="col-sm-3">お疲れ様の一言</dt>
+				<dd class="col-sm-9">{{ overtime_detail.evening_word|default:"お疲れ様でした" }}</dd>
+				<dt class="col-sm-3">退社時間</dt>
+				<dd class="col-sm-9">{{ overtime_detail.end_datetime }}</dd>
+				<dt class ="evening_hide col-sm-3">夜の時間外労働</dt>
+				<dd class="col-sm-9">{{ overtime_detail.evening_overtime }}</dd>
+			</dl>
+		</div>
+	</div>-->
+</div>
+
+{% endblock %}

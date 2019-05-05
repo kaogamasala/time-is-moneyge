@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load timedelta_filter %}
+{% load humanize %}
+{% block content %}
+{% load static %}
+
+<div class="row justify-content-center mb-4">
+	<a class="btn btn-primary mr-4" role="button" href="{% url 'tim_app:timeismoneyge_list' user.id %}">ホームに戻る</a>
+</div>
+<div class="row justify-content-center mb-4">
+	<h5>退勤の手続きがされてません！！</h5>
+</div>
+
+
+
+{% endblock %}

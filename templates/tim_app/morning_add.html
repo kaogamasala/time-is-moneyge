@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load bootstrap4%}
+{% block content %}
+{% load static %}
+<div class="container">
+	<div class="row justify-content-center">
+		<div class="col-lg-8 col-md-10 col-sm-12">
+			<div class="card-body">
+				<div>
+					<a class="btn btn-primary w-15 mb-4" href="{% url 'tim_app:timeismoneyge_list' user.id %}">ホームに戻る</a>
+				</div>
+
+				<form action="{% url 'tim_app:morning_add' user.id %}" method="POST">{% csrf_token %}
+					{% bootstrap_form morning_form %}
+					<button type="submit" class = "btn btn-primary " role="button">おはようございます！</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
+

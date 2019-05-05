@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load bootstrap4%}
+{% block content %}
+{% load static %}
+<div class="container">
+	<div class="row justify-content-center">
+		<div class="col-lg-8 col-md-10 col-sm-12">
+			<div class="card-body">
+				<div>
+					<a class="btn btn-primary w-15 mb-4" href="{% url 'tim_app:detail' edit_overtime.id %}">戻る</a>
+				</div>
+				<form action="{% url 'tim_app:evening_edit' edit_overtime.id %}" method="POST">{% csrf_token %}
+					{% bootstrap_form evening_form %}
+					<button type="submit" class = "btn btn-primary " role="button">お疲れ様を修正</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

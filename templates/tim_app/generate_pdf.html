@@ -1,0 +1,112 @@
+<html lang="ja">
+	<head>
+
+	  <meta charset="UTF-8">
+	  <link rel="stylesheet" href="style.css">
+
+	  <title>今月の労働</title>
+
+	  <h1>出勤簿</h1>
+
+	  <style>
+	  	h1 {
+	  		text-align: center;
+	  	}
+	  	#work_of_thismonth{
+	  		display: flex;
+	  		justify-content: space-around;
+	  	}
+	  	#work_of_thismonth > div {
+	  		width: 100%;
+	  	}
+	  	table {
+	  		border-collapse: collapse;
+	  		width: 100%
+	  		
+	  	}
+	  	td, th {
+	  		text-align: center;
+	  		border: 1px solid;
+	  		font-size: 12px
+	  	}
+	  	.name {
+	  		text-align: right;
+	  	}
+	  </style>
+
+	</head>
+
+	<body>
+
+		<div class="name">
+			<div>氏名:{{ user.last_name }}{{ user.first_name }}
+			</div>
+			<div>
+				合計残業時間:{{ total_overtime_of_thismonth }}
+			</div>
+		</div>
+		<br>
+
+		<div id="work_of_thismonth">
+			<div>
+				<table>
+					<thead>
+						<tr>
+							<th>日付</th>
+							<th>出社時間</th>
+							<th>朝の時間外労働</th>
+						</tr>
+					</thead>
+					<tbody>
+					{% for morning_overtime_of_thismonth_for_pdf in morning_overtime_of_thismonth_for_pdf %}
+						<tr>
+							<td>{{ morning_overtime_of_thismonth_for_pdf.date }}</td>
+							<td>{{ morning_overtime_of_thismonth_for_pdf.start_datetime }}</td>
+							<td>{{ morning_overtime_of_thismonth_for_pdf.morning_overtime }}</td>
+						</tr>
+					{% endfor %}
+					</tbody>
+				</table>
+			</div>
+			<div>
+				<table>
+					<thead>
+						<tr>
+							<th>退社時間</th>
+							<th>夜の時間外労働</th>
+							<th>合計残業時間</th>
+						</tr>
+					</thead>
+					<tbody>
+					{% for evening_overtime_of_thismonth_for_pdf in evening_overtime_of_thismonth_for_pdf %}	
+						<tr>	
+							<td>{{ evening_overtime_of_thismonth_for_pdf.end_datetime }}</td>
+							<td>{{ evening_overtime_of_thismonth_for_pdf.evening_overtime }}</td>
+							<td>{{ evening_overtime_of_thismonth_for_pdf.todays_overtime }}</td>
+						</tr>	
+					{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<h1>有給休暇</h1>
+		<div>
+			<table>
+				<thead>
+					<tr>
+						<th>有給休暇日</th>
+						<th>MEMO</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for paid_leave_list_pdf in paid_leave_list_pdf %}
+					<tr>
+						<td>{{ paid_leave_list_pdf.paid_leave_date }}</td>
+						<td>{{ paid_leave_list_pdf.memo|default:"私用のため" }}</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</body>
+</html>
