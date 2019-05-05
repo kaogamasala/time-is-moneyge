@@ -1,0 +1,1 @@
+web: gunicorn time_is_moneyge.wsgi
