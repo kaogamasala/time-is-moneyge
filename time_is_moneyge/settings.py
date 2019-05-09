@@ -24,7 +24,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '3=!vn+_=6n#5*+&1%yqax+zm)l-5e74#33n3r0bxg&930rmtt%'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -186,4 +186,15 @@ LOGIN_REDIRECT_URL = 'http://127.0.0.1:8000/'
 ACCOUNT_LOGOUT_REDIRECT_URL = '/accounts/login/'"""
 
 #django_heroku
-django_heroku.settings(locals())
+#django_heroku.settings(locals())
+
+# local_settings.py読み込み
+try:
+    from .local_settings import *
+except ImportError:
+    pass
+
+# Debug=Falseの時だけ実行する設定
+if not DEBUG:
+    import django_heroku
+    django_heroku.settings(locals())

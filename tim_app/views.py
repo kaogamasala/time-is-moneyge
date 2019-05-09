@@ -48,6 +48,7 @@ class TimeIsMoneygeListView(LoginRequiredMixin, OnlyYouMixin, View):
 			"""一覧データ取得"""
 			morning_list = Time_is_moneyge.objects.filter(user=self.request.user).exclude(morning_overtime__exact = None).order_by('id') 
 			evening_list = Time_is_moneyge.objects.filter(user=self.request.user).exclude(evening_overtime__exact = None).order_by('id') 
+			
 			#querysetの結合
 			total_list = sorted(
 			chain(morning_list, evening_list),
@@ -63,10 +64,13 @@ class TimeIsMoneygeListView(LoginRequiredMixin, OnlyYouMixin, View):
 			
 			"""今日の日付を取得"""
 			today = datetime.today() 
-
+			
 			"""今月の残業時間"""
-			if today.day != 1 or 2 or 3 or 4 or 5 or 6 or 7 or 8 or 9 or 10: #日付が1日から10日以外
+			if today.day > 10: #日付が1日から10日以外
+				print(type(today.day))
+				print(today.day)
 				eleventh_of_thismonth = today + relativedelta(day=11) #今月の11日を取得
+				print("今月", eleventh_of_thismonth)
 				work_of_thismonth = Time_is_moneyge.objects.filter(date__range=(eleventh_of_thismonth, today), user=self.request.user) #11日から今日までのオブジェクトをログインユーザーで取得
 				morning_overtime_of_thismonth = work_of_thismonth.aggregate(morning_overtime=Sum('morning_overtime')) #今月の朝の残業時間を集計
 				evening_overtime_of_thismonth = work_of_thismonth.aggregate(evening_overtime=Sum('evening_overtime')) #今月の夜の残業時間を集計
@@ -84,6 +88,7 @@ class TimeIsMoneygeListView(LoginRequiredMixin, OnlyYouMixin, View):
 			#今日の日付が1日〜10日の場合
 			else:
 				eleventh_of_one_month_ago = today - relativedelta(months=1, day=11) #一月前の11日を取得
+				print("ひと月前", eleventh_of_one_month_ago)
 				work_of_thismonth = Time_is_moneyge.objects.filter(date__range=(eleventh_of_one_month_ago, today), user=self.request.user) #11日から今日までのオブジェクトをログインユーザーで取得
 				morning_overtime_of_thismonth = work_of_thismonth.aggregate(morning_overtime=Sum('morning_overtime')) #今月の朝の残業時間を集計
 				evening_overtime_of_thismonth = work_of_thismonth.aggregate(evening_overtime=Sum('evening_overtime')) #今月の夜の残業時間を集計
@@ -110,7 +115,7 @@ class TimeIsMoneygeListView(LoginRequiredMixin, OnlyYouMixin, View):
 				total_overtime_amount = 0
 
 			"""今月の有給"""
-			if today.day != 1 or 2 or 3 or 4 or 5 or 6 or 7 or 8 or 9 or 10:
+			if today.day  > 10:
 				eleventh_of_thismonth = today + relativedelta(day=11) #今月の11日を取得
 				tenth_of_next_month = today + relativedelta(months=1, day=10) #次月の10日取得
 				paid_leave_list = Paid_leave.objects.filter(user=self.request.user, paid_leave_date__range=(eleventh_of_thismonth, tenth_of_next_month)).order_by('paid_leave_date') 
@@ -663,7 +668,7 @@ class GeneratePdfView(LoginRequiredMixin, OnlyYouMixin, View):
 	def get(self, request, *args, **kwargs):
 		"""今月の労働実績"""
 		today = datetime.today()
-		if today.day != 1 or 2 or 3 or 4 or 5 or 6 or 7 or 8 or 9 or 10: #one_to_ten_daysには1から10の数字がくる
+		if today.day > 10: #one_to_ten_daysには1から10の数字がくる
 			eleventh_of_thismonth = today + relativedelta(day=11) #今月の11日を取得
 			morning_overtime_of_thismonth_for_pdf = Time_is_moneyge.objects.filter(date__range=(eleventh_of_thismonth, today)).exclude(morning_overtime__exact = None) #11日から今日まで＆morning_overtime=None除外を取得
 			evening_overtime_of_thismonth_for_pdf = Time_is_moneyge.objects.filter(date__range=(eleventh_of_thismonth, today)).exclude(evening_overtime__exact = None) #11日から今日まで＆evening_overtime=None除外を取得
@@ -685,7 +690,7 @@ class GeneratePdfView(LoginRequiredMixin, OnlyYouMixin, View):
 		"""合計残業時間取得"""
 		#今日の日付が11日〜31日の場合
 		today = datetime.today() #今日の日付を取得
-		if today.day != 1 or 2 or 3 or 4 or 5 or 6 or 7 or 8 or 9 or 10: #one_to_ten_daysには1から10の数字がくる
+		if today.day > 10: #one_to_ten_daysには1から10の数字がくる
 			eleventh_of_thismonth = today + relativedelta(day=11) #今月の11日を取得
 			work_of_thismonth = Time_is_moneyge.objects.filter(date__range=(eleventh_of_thismonth, today), user=self.request.user) #11日から今日までのオブジェクトを取得
 			morning_overtime_of_thismonth = work_of_thismonth.aggregate(morning_overtime=Sum('morning_overtime')) #今月の朝の残業時間を集計
@@ -721,14 +726,14 @@ class GeneratePdfView(LoginRequiredMixin, OnlyYouMixin, View):
 
 		"""有給休暇一覧"""
 		today = datetime.today() #今日の日付を取得
-		if today.day != 1 or 2 or 3 or 4 or 5 or 6 or 7 or 8 or 9 or 10:
+		if today.day > 10:
 			eleventh_of_thismonth = today + relativedelta(day=11) #今月の11日を取得
 			tenth_of_next_month = today + relativedelta(months=1, day=10) #次月の10日取得
 			paid_leave_list_pdf = Paid_leave.objects.filter(paid_leave_date__range=(eleventh_of_thismonth, tenth_of_next_month), user=self.request.user).order_by('paid_leave_date') 
 		else:
 			eleventh_of_one_month_ago = today - relativedelta(months=1, day=11) #一月前の11日を取得
 			tenth_of_this_month = today + relativedelta(day=10) #今月の10日取得
-			paid_leave_list_pdf = Paid_leave.objects.filter(date__range=(eleventh_of_one_month_ago, tenth_of_this_month), user=self.request.user).order_by('paid_leave_date') 
+			paid_leave_list_pdf = Paid_leave.objects.filter(paid_leave_date__range=(eleventh_of_one_month_ago, tenth_of_this_month), user=self.request.user).order_by('paid_leave_date') 
 
 		html_template = get_template('tim_app/generate_pdf.html')
 		html_str = html_template.render({
