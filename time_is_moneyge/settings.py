@@ -196,6 +196,7 @@ except ImportError:
 
 # Debug=Falseの時だけ実行する設定
 if not DEBUG:
-    SECRET_KEY = os.environ['SECRET_KEY']
+    SECRET_KEY = os.environ['SECRET_KEY'] #追加
     import django_heroku
     django_heroku.settings(locals())
+
