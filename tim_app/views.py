@@ -11,7 +11,7 @@ from django.views.decorators.http import require_POST
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
 
-from tim_app.models import Time_is_moneyge, Hourly_wage, Paid_leave
+from .models import Time_is_moneyge, Hourly_wage, Paid_leave
 from .forms import MorningForm, EveningForm, HourlyWageForm, PaidLeaveForm
 
 from django.views import generic, View
