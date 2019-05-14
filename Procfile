@@ -1,1 +1,1 @@
-web: gunicorn time_is_moneyge.wsgi
+web: gunicorn time_is_moneyge.wsgi --log-file -

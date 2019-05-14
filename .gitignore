@@ -5,3 +5,5 @@ __pycache__
 .DS_Store
 staticfiles
 local_settings.py
+timeismoneyge_venv
+*.py[co]
