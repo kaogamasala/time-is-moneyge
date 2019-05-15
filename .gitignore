@@ -7,4 +7,3 @@ staticfiles
 local_settings.py
 timeismoneyge_venv
 *.py[co]
-migrations
