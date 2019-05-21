@@ -94,6 +94,17 @@ WSGI_APPLICATION = 'time_is_moneyge.wsgi.application'
     }
 }'''
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'time_is_moneyge',
+#         'USER': 'root',
+#         'PASSWORD': 'admin',
+#         'HOST': 'localhost',
+#         'PORT': '3306',
+#     }
+# }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
@@ -149,6 +160,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # 拡張ユーザーモデルクラスを作成した場合定義する
 AUTH_USER_MODEL = 'accounts.CustomUser'
 
+#
 
 # local_settings.py読み込み
 try:
