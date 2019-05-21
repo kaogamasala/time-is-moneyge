@@ -42,9 +42,9 @@ class TimeIsMoneygeListView(LoginRequiredMixin, OnlyYouMixin, View):
 		
 		"""ユーザー検証"""
 		login_user_id = str(self.request.user.id) #ログインしているユーザーのid
-		print("ログイン",login_user_id)
+		print("ログインID",login_user_id)
 		url_user_id = str(self.kwargs['id']) #urlのid
-		print("url", url_user_id)
+		print("URLID", url_user_id)
 		if login_user_id == url_user_id:
 
 			"""一覧データ取得"""
@@ -468,21 +468,38 @@ class MorningView(LoginRequiredMixin, OnlyYouMixin, View):
 		if morning_form.is_valid():
 			morning = morning_form.save(commit=False) #保存待った！
 			AM_NINE = datetime.now().replace(hour=9,minute=0,second=0,microsecond=0) #その日の朝9時を取得
-			last_data = Time_is_moneyge.objects.filter(user=self.request.user).last()
-			print(last_data.evening_overtime)
+			last_data = Time_is_moneyge.objects.filter(user=self.request.user).last() #ログインユーザーの最新のレコード取得
 
-			if last_data.evening_overtime == None: # 退勤手続きをしていない場合
+			#一番最初の登録
+			if last_data == None:
+				# 9時以降の登録
+				if AM_NINE < datetime.now():
+					morning.morning_overtime = AM_NINE - AM_NINE
+					morning.overtime = AM_NINE - AM_NINE
+					morning.user = self.request.user
+					morning.save() 
+				# 9時以前の登録
+				elif AM_NINE > datetime.now():
+					morning.morning_overtime = AM_NINE - datetime.now()
+					morning.overtime = AM_NINE -datetime.now()
+					morning.user = self.request.user
+					morning.save()
+			# 出勤登録をしていない場合
+			elif last_data.evening_overtime == None: # 退勤手続きをしていない場合
 				return render(request, 'tim_app/not_evening_register.html')
-			elif AM_NINE < datetime.now(): #朝9時を超えている場合
+			#朝9時を超えている場合
+			elif AM_NINE < datetime.now(): 
 				morning.morning_overtime = AM_NINE - AM_NINE
 				morning.overtime = AM_NINE - AM_NINE
 				morning.user = self.request.user
-				morning.save() #保存
+				morning.save() 
+			# 朝9時以前の場合（正常登録）
 			else:
 				morning.morning_overtime = AM_NINE - datetime.now() #朝の残業時間を取得
 				morning.overtime = AM_NINE - datetime.now() #朝の残業時間を取得overtime用
 				morning.user = self.request.user
 				morning.save() #保存
+
 			return redirect('tim_app:timeismoneyge_list', id=self.kwargs['id'])
 
 		context = {
