@@ -41,7 +41,7 @@
 
 				<!--START BRAND TITLE-->
 				<div class = "font-weight-bold">
-					<a class="navbar-brand text-white" href="http://127.0.0.1:8000/">Time Is Moneyge</a>
+					<a class="navbar-brand text-white" href="{% url 'tim_app:timeismoneyge' %}">Time Is Moneyge</a>
 				</div>
 				<!--END BRAND TITLE-->
 
@@ -107,7 +107,7 @@
 		<footer id="footer" class="page-footer font-small bg-dark mt-4">
 		  <!-- START COPYRIGHT -->
 		  <div class="footer-copyright text-center py-3 text-white">© <span id="view_today"></span> Copyright:
-		    <a class="font-weight-bold" href="http://127.0.0.1:8000/">Time Is Moneyge</a>
+		    <a class="font-weight-bold" href="{% url 'tim_app:timeismoneyge' %}">Time Is Moneyge</a>
 		  </div>
 		  <!-- END COPYRIGHT -->
 
@@ -133,6 +133,7 @@
 		<script type="text/javascript" src="{%static 'tim_app/js/tim_app.js' %}"></script>
 		<!--datatables.js-->
 		<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+		<script src="https://cdn.datatables.net/plug-ins/1.10.19/i18n/Japanese.json"></script>
 		<!--footerFixed.js-->
 		<script type="text/javascript" src="{% static 'tim_app/js/footerFixed.js' %}"></script>
 	    <!-- jQuery first, then Popper.js, then Bootstrap JS -->

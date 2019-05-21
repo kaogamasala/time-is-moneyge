@@ -449,10 +449,6 @@ def detail(request, overtime_id):
 		return render(request, 'tim_app/detail.html', {'overtime_detail': overtime_detail})
 	else:
 		return render(request, "tim_app/exception.html")
-# class TimeIsMoneygeDetailView(generic.DetailView):
-#     model = Time_is_moneyge
-#     template_name = 'tim_app/detail.html'
-#     pk_url_kwarg = 'id'
 
 """出社時間登録"""
 class MorningView(LoginRequiredMixin, OnlyYouMixin, View):
@@ -477,27 +473,32 @@ class MorningView(LoginRequiredMixin, OnlyYouMixin, View):
 					morning.morning_overtime = AM_NINE - AM_NINE
 					morning.overtime = AM_NINE - AM_NINE
 					morning.user = self.request.user
+					print("一番最初の登録、9時以降")
 					morning.save() 
 				# 9時以前の登録
 				elif AM_NINE > datetime.now():
 					morning.morning_overtime = AM_NINE - datetime.now()
 					morning.overtime = AM_NINE -datetime.now()
 					morning.user = self.request.user
+					print("一番最初の登録、9時以前")
 					morning.save()
 			# 出勤登録をしていない場合
 			elif last_data.evening_overtime == None: # 退勤手続きをしていない場合
+				print("朝の登録無し")
 				return render(request, 'tim_app/not_evening_register.html')
 			#朝9時を超えている場合
 			elif AM_NINE < datetime.now(): 
 				morning.morning_overtime = AM_NINE - AM_NINE
 				morning.overtime = AM_NINE - AM_NINE
 				morning.user = self.request.user
+				print("9時以降の登録")
 				morning.save() 
 			# 朝9時以前の場合（正常登録）
 			else:
 				morning.morning_overtime = AM_NINE - datetime.now() #朝の残業時間を取得
 				morning.overtime = AM_NINE - datetime.now() #朝の残業時間を取得overtime用
 				morning.user = self.request.user
+				print("9時以前の登録")
 				morning.save() #保存
 
 			return redirect('tim_app:timeismoneyge_list', id=self.kwargs['id'])
@@ -766,93 +767,3 @@ class GeneratePdfView(LoginRequiredMixin, OnlyYouMixin, View):
 		response['Content-Disposition'] = 'filename="work_of_thismonth.pdf"'
 
 		return response
-
-# @login_required
-# def generate_pdf(request):
-	
-# 	"""今月の労働実績"""
-# 	today = datetime.today()
-# 	if today.day != 1 or 2 or 3 or 4 or 5 or 6 or 7 or 8 or 9 or 10: #one_to_ten_daysには1から10の数字がくる
-# 		eleventh_of_thismonth = today + relativedelta(day=11) #今月の11日を取得
-# 		morning_overtime_of_thismonth_for_pdf = Time_is_moneyge.objects.filter(date__range=(eleventh_of_thismonth, today)).exclude(morning_overtime__exact = None) #11日から今日まで＆morning_overtime=None除外を取得
-# 		evening_overtime_of_thismonth_for_pdf = Time_is_moneyge.objects.filter(date__range=(eleventh_of_thismonth, today)).exclude(evening_overtime__exact = None) #11日から今日まで＆evening_overtime=None除外を取得
-# 		for mo in morning_overtime_of_thismonth_for_pdf:
-# 				mo.morning_overtime = str(mo.morning_overtime).split('.')[0] #朝の時間外労働のmicrosecondを切り捨て
-# 		for eve in evening_overtime_of_thismonth_for_pdf:
-# 			eve.evening_overtime = str(eve.evening_overtime).split('.')[0] #夜の時間外労働のmicrosecondを切り捨て
-# 			eve.todays_overtime = str(eve.todays_overtime).split('.')[0] #今日の残業時間のmicrosecondを切り捨て
-# 	else:
-# 		eleventh_of_one_month_ago = today - relativedelta(months=1, day=11) #一月前の11日を取得
-# 		morning_overtime_of_thismonth_for_pdf = Time_is_moneyge.objects.filter(date__range=(eleventh_of_one_month_ago, today)).exclude(morning_overtime__exact = None) #11日から今日まで＆morning_overtime=None除外を取得
-# 		evening_overtime_of_thismonth_for_pdf = Time_is_moneyge.objects.filter(date__range=(eleventh_of_one_month_ago, today)).exclude(evening_overtime__exact = None) #11日から今日まで＆evening_overtime=None除外を取得
-# 		for mo in morning_overtime_of_thismonth_for_pdf:
-# 				mo.morning_overtime = str(mo.morning_overtime).split('.')[0] #朝の時間外労働のmicrosecondを切り捨て
-# 		for eve in evening_overtime_of_thismonth_for_pdf:
-# 			eve.evening_overtime = str(eve.evening_overtime).split('.')[0] #夜の時間外労働のmicrosecondを切り捨て
-# 			eve.todays_overtime = str(eve.todays_overtime).split('.')[0] #今日の残業時間のmicrosecondを切り捨て
-
-# 	"""合計残業時間取得"""
-# 	#今日の日付が11日〜31日の場合
-# 	today = datetime.today() #今日の日付を取得
-# 	if today.day != 1 or 2 or 3 or 4 or 5 or 6 or 7 or 8 or 9 or 10: #one_to_ten_daysには1から10の数字がくる
-# 		eleventh_of_thismonth = today + relativedelta(day=11) #今月の11日を取得
-# 		work_of_thismonth = Time_is_moneyge.objects.filter(date__range=(eleventh_of_thismonth, today)) #11日から今日までのオブジェクトを取得
-# 		morning_overtime_of_thismonth = work_of_thismonth.aggregate(morning_overtime=Sum('morning_overtime')) #今月の朝の残業時間を集計
-# 		evening_overtime_of_thismonth = work_of_thismonth.aggregate(evening_overtime=Sum('evening_overtime')) #今月の夜の残業時間を集計
-# 		for moot_key, moot_value in morning_overtime_of_thismonth.items(): #keyとvalueに分ける
-# 			morning_total_overtime = moot_value #valueを取得
-# 			for eoot_key, eoot_value in evening_overtime_of_thismonth.items(): #keyとvalueに分ける
-# 				evening_total_overtime = eoot_value #valueを取得
-# 				try:
-# 					total_overtime_of_thismonth = morning_total_overtime + evening_total_overtime #今月の残業時間合計を取得
-# 					minutes, seconds = divmod(total_overtime_of_thismonth.seconds + total_overtime_of_thismonth.days * 86400, 60) #days * 86400で日にちを秒に変換、時間を秒に変換したものを+して60で割って分と秒にわける
-# 					hours, minutes = divmod(minutes, 60) #分を時と分に
-# 					total_overtime_of_thismonth = '{:d}:{:02d}:{:02d}'.format(hours, minutes, seconds) 
-# 				except:
-# 					total_overtime_of_thismonth = 0
-# 	#今日の日付が1日〜10日の場合
-# 	else:
-# 		eleventh_of_one_month_ago = today - relativedelta(months=1, day=11) #一月前の11日を取得
-# 		work_of_thismonth = Time_is_moneyge.objects.filter(date__range=(eleventh_of_one_month_ago, today)) #11日から今日までのオブジェクトを取得
-# 		morning_overtime_of_thismonth = work_of_thismonth.aggregate(morning_overtime=Sum('morning_overtime')) #今月の朝の残業時間を集計
-# 		evening_overtime_of_thismonth = work_of_thismonth.aggregate(evening_overtime=Sum('evening_overtime')) #今月の夜の残業時間を集計
-# 		for moot_key, moot_value in morning_overtime_of_thismonth.items(): #keyとvalueに分ける
-# 			morning_total_overtime = moot_value #valueを取得
-# 			for eoot_key, eoot_value in evening_overtime_of_thismonth.items(): #keyとvalueに分ける
-# 				evening_total_overtime = eoot_value #valueを取得
-# 				try:
-# 					total_overtime_of_thismonth = morning_total_overtime + evening_total_overtime #今月の残業時間合計を取得
-# 					minutes, seconds = divmod(total_overtime_of_thismonth.seconds + total_overtime_of_thismonth.days * 86400, 60) #days * 86400で日にちを秒に変換、時間を秒に変換したものを+して60で割って分と秒にわける
-# 					hours, minutes = divmod(minutes, 60) #分を時と分に
-# 					total_overtime_of_thismonth = '{:d}:{:02d}:{:02d}'.format(hours, minutes, seconds)
-# 				except:
-# 					total_overtime_of_thismonth = 0
-
-# 	"""有給休暇一覧"""
-# 	today = datetime.today() #今日の日付を取得
-# 	if today.day != 1 or 2 or 3 or 4 or 5 or 6 or 7 or 8 or 9 or 10:
-# 		eleventh_of_thismonth = today + relativedelta(day=11) #今月の11日を取得
-# 		tenth_of_next_month = today + relativedelta(months=1, day=10) #次月の10日取得
-# 		paid_leave_list_pdf = Paid_leave.objects.filter(paid_leave_date__range=(eleventh_of_thismonth, tenth_of_next_month)).order_by('paid_leave_date') 
-# 	else:
-# 		eleventh_of_one_month_ago = today - relativedelta(months=1, day=11) #一月前の11日を取得
-# 		tenth_of_this_month = today + relativedelta(day=10) #今月の10日取得
-# 		paid_leave_list_pdf = Paid_leave.objects.filter(date__range=(eleventh_of_one_month_ago, tenth_of_this_month)).order_by('paid_leave_date') 
-
-# 	html_template = get_template('tim_app/generate_pdf.html')
-# 	html_str = html_template.render({
-# 		'morning_overtime_of_thismonth_for_pdf': morning_overtime_of_thismonth_for_pdf,
-# 		'evening_overtime_of_thismonth_for_pdf': evening_overtime_of_thismonth_for_pdf,
-# 		'total_overtime_of_thismonth': total_overtime_of_thismonth,
-# 		'paid_leave_list_pdf': paid_leave_list_pdf,
-# 		},request) 
-# 	pdf_file = HTML(string=html_str).write_pdf()
-# 	response = HttpResponse(pdf_file, content_type='application/pdf')
-# 	response['Content-Disposition'] = 'filename="work_of_thismonth.pdf"'
-
-# 	return response
-
-
-
-
-

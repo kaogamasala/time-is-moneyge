@@ -94,17 +94,6 @@ WSGI_APPLICATION = 'time_is_moneyge.wsgi.application'
     }
 }'''
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'time_is_moneyge',
-#         'USER': 'root',
-#         'PASSWORD': 'admin',
-#         'HOST': 'localhost',
-#         'PORT': '3306',
-#     }
-# }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
@@ -151,7 +140,7 @@ STATICFILES_DIRS = (
 ##################
 # Authentication #
 ##################
-LOGIN_REDIRECT_URL = 'http://127.0.0.1:8000/'
+LOGIN_REDIRECT_URL = 'https://timeismoneyge.herokuapp.com/'
 ACCOUNT_LOGOUT_REDIRECT_URL = '/accounts/login/'
 
 # DEBUGがTrue場合の動作確認を想定した設定（パスワード再設定メール）
@@ -160,33 +149,6 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # 拡張ユーザーモデルクラスを作成した場合定義する
 AUTH_USER_MODEL = 'accounts.CustomUser'
 
-#################################
-# Django-allauth Authentication #
-#################################
-"""AUTHENTICATION_BACKENDS = (
-    'django.contrib.auth.backends.ModelBackend', #ユーザー名とパスワードでユーザーモデルを検索するための認証バックエンド（管理サイト用に削除しない）
-    'allauth.account.auth_backends.AuthenticationBackend', #emailとパスワードでユーザーモデルを検索するために追加
-    )
-
-# 認証方式をメールアドレスとパスワードに変更
-ACCOUNT_AUTHENTICATION_METHOD = 'email'
-# ユーザー名は使用しない
-ACCOUNT_USERNAME_REQUIRED = False
-
-#ユーザー登録確認メールを送信するか'mandatory'、しないか'none' 
-ACCOUNT_EMAIL_VERIFICATION = 'none' 
-#メールアドレスを必須項目にする
-ACCOUNT_EMAIL_REQUIRED = True
-
-#動かしているDjangoサイトを識別するためのID
-SITE_ID = 1
-
-#リダイレクト先
-LOGIN_REDIRECT_URL = 'http://127.0.0.1:8000/'
-ACCOUNT_LOGOUT_REDIRECT_URL = '/accounts/login/'"""
-
-#django_heroku
-#django_heroku.settings(locals())
 
 # local_settings.py読み込み
 try:

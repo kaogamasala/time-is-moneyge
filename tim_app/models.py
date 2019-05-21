@@ -15,10 +15,8 @@ class Time_is_moneyge(models.Model):
 	todays_overtime = models.DurationField(null=True)
 	working_time = models.DurationField(null=True)
 	user = models.ForeignKey(CustomUser, on_delete=models.DO_NOTHING)
-	
 
 	def __str__(self):
-		#return self.morning_word
 		return str(self.morning_word)
 
 class Hourly_wage(models.Model):
