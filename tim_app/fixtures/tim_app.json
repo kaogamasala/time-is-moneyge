@@ -1,0 +1,14 @@
+[
+  {
+    "model": "tim_app.time_is_moneyge",
+    "pk": 1,
+    "fields": {
+      "date": "2019-05-28",
+      "morning_word": "",
+      "start_datetime": "2019-03-01 10:36:02.544006",
+      "evening_word": "",
+      "end_datetime": "2019-03-01 10:36:02.544081",
+      "user": 11
+    }
+  }
+]

@@ -24,3 +24,14 @@ td, th {
 #table-members table {
   width: 100%;
 }
+
+/*WeasyPrint文字化け用*/
+@font-face {
+  font-family: 'Noto Sans JP';
+  src: url('tim_app/font/NotoSansJP-Black.otf');
+}
+@page {
+  padding: 0 !important;
+  margin: 0 !important;
+  font-family: 'Noto Sans JP';
+}
