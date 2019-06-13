@@ -6,8 +6,6 @@
 
 	  <title>今月の労働</title>
 
-	  <h1>出勤簿</h1>
-
 	  <style>
 	  	h1 {
 	  		text-align: center;
@@ -32,23 +30,36 @@
 	  	.name {
 	  		text-align: right;
 	  	}
-	  </style>
+
+	  	@font-face {
+			  font-family: 'Noto Sans JP';
+			  src: url("https://fonts.googleapis.com/css?family=Noto+Sans+JP");
+		}
+		@page {
+			  padding: 0 !important;
+			  margin: 0 !important;
+			  font-family: 'Noto Sans JP';
+		}
+		
+		.wf-notosansjapanese { font-family: "Noto Sans JP"; }
+
+	  	</style>
 
 	</head>
 
 	<body>
-
+		<h1 class="wf-notosansjapanese">出勤簿</h1>
 		<div class="name">
-			<div>氏名:{{ user.last_name }}{{ user.first_name }}
+			<div class="wf-notosansjapanese">氏名:{{ user.last_name }}{{ user.first_name }}
 			</div>
-			<div>
+			<div class="wf-notosansjapanese">
 				合計残業時間:{{ total_overtime_of_thismonth }}
 			</div>
 		</div>
 		<br>
 
 		<div id="work_of_thismonth">
-			<div>
+			<div class="wf-notosansjapanese">
 				<table>
 					<thead>
 						<tr>
@@ -68,7 +79,7 @@
 					</tbody>
 				</table>
 			</div>
-			<div>
+			<div class="wf-notosansjapanese">
 				<table>
 					<thead>
 						<tr>
@@ -89,8 +100,8 @@
 				</table>
 			</div>
 		</div>
-		<h1>有給休暇</h1>
-		<div>
+		<h1 class="wf-notosansjapanese">有給休暇</h1>
+		<div class="wf-notosansjapanese">
 			<table>
 				<thead>
 					<tr>

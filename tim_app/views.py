@@ -110,7 +110,11 @@ class TimeIsMoneygeListView(LoginRequiredMixin, OnlyYouMixin, View):
 			"""合計の残業金額"""
 			try:
 				total_overtime_of_thismonth_str = '.'.join(re.split('[,:]', str(total_overtime_of_thismonth))[0:2]) #timedeltaを文字列に変換。dayとsecondをsplit
-				total_overtime_of_thismonth_float = float(total_overtime_of_thismonth_str) #str型をfloat型に変換
+				total_overtime_of_thismonth_str_hour = '.'.join(re.split('[,:]', str(total_overtime_of_thismonth))[0:1]) #timedeltaを文字列に変換。hourだけ
+				total_overtime_of_thismonth_str_minute = '.'.join(re.split('[,:]', str(total_overtime_of_thismonth))[1:2]) #timedeltaを文字列に変換。minuteだけ
+				total_overtime_of_thismonth_int_hour = int(total_overtime_of_thismonth_str_hour) * 60 #hourを分に変換
+				total_overtime_of_thismonth_int = (total_overtime_of_thismonth_int_hour + int(total_overtime_of_thismonth_str_minute)) / 60 #合計時間を時間に変換
+				total_overtime_of_thismonth_float = float(total_overtime_of_thismonth_int) #float型に変換
 				total_overtime_amount = total_overtime_of_thismonth_float * current_hourly_wage #合計残業金額を取得
 				total_overtime_amount = (Decimal(str(total_overtime_amount)).quantize(Decimal('0'), rounding=ROUND_HALF_UP)) #四捨五入
 			except:
