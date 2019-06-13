@@ -3,10 +3,14 @@
 
 	  <meta charset="UTF-8">
 	  <link rel="stylesheet" href="style.css">
+	  <!-- google fonts -->
+		<link href="https://fonts.googleapis.com/css?family=Noto+Sans+JP" rel="stylesheet">
 
 	  <title>今月の労働</title>
 
-	  <style>
+	</head>
+
+	<style>
 	  	h1 {
 	  		text-align: center;
 	  	}
@@ -44,13 +48,12 @@
 			  font-family: 'Noto Sans JP';
 		}*/
 
-		.wf-notosansjapanese { font-family: 'Noto Sans JP'; }
+		body { font-family: 'Noto Sans JP'; }
 
-	  	</style>
-
-	</head>
+	</style>
 
 	<body>
+
 		<h1 class="wf-notosansjapanese">出勤簿</h1>
 		<div class="name">
 			<div class="wf-notosansjapanese">氏名:{{ user.last_name }}{{ user.first_name }}
