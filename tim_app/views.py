@@ -19,7 +19,7 @@ from django.contrib import messages
 
 """weasyprint"""
 from django.template.loader import render_to_string
-from weasyprint import HTML
+from weasyprint import HTML, CSS
 import tempfile
 from django.template.loader import get_template
 
@@ -766,7 +766,11 @@ class GeneratePdfView(LoginRequiredMixin, OnlyYouMixin, View):
 			'total_overtime_of_thismonth': total_overtime_of_thismonth,
 			'paid_leave_list_pdf': paid_leave_list_pdf,
 			},request) 
-		pdf_file = HTML(string=html_str).write_pdf()
+		pdf_file = HTML(string=html_str, encoding='utf-8').write_pdf(
+			stylesheets=[
+        		CSS('./static/tim_app/css/generate_pdf.css')
+        		 ],
+        	)
 		response = HttpResponse(pdf_file, content_type='application/pdf')
 		response['Content-Disposition'] = 'filename="work_of_thismonth.pdf"'
 

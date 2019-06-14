@@ -7,62 +7,22 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
   	<!-- google fonts -->
-	<!-- <link href="https://fonts.googleapis.com/css?family=Noto+Sans+JP" rel="stylesheet"> -->
 	<!-- <link href="https://fonts.googleapis.com/css?family=Noto+Sans+JP&display=swap" rel="stylesheet"> -->
+	<link href="https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c&display=swap" rel="stylesheet">
+
+	<!-- ↓weasyprintはTemplate内で直接指定しているCSSはWeasyPrint経由だと参照されないので注意。 -->
+	<!-- <link rel="stylesheet" type="text/css" href="{% static 'tim_app/css/generate_pdf.css' %}"> -->
 
 
  	 <title>今月の労働</title>
 
 	</head>
 
-	<style>
-		@import url('https://fonts.googleapis.com/css?family=Noto+Sans+JP&display=swap');
-	  	h1 {
-	  		text-align: center;
-	  	}
-	  	#work_of_thismonth{
-	  		display: flex;
-	  		justify-content: space-around;
-	  	}
-	  	#work_of_thismonth > div {
-	  		width: 100%;
-	  	}
-	  	table {
-	  		border-collapse: collapse;
-	  		width: 100%
-	  		
-	  	}
-	  	td, th {
-	  		text-align: center;
-	  		border: 1px solid;
-	  		font-size: 12px
-	  	}
-	  	.name {
-	  		text-align: right;
-	  	}
-
-	  	@font-face {
-			  font-family: 'Noto Sans JP', sans-serif;
-			  /*src: url("https://fonts.googleapis.com/css?family=Noto+Sans+JP");*/
-			  /*src: url('https://fonts.googleapis.com/css?family=Noto+Sans+JP&display=swap');*/
-			  /*src: url("../static/tim_app/fonts/NotoSansJP-Black.otf") format('woff');*/
-		}
-/*
-		@page {
-			  padding: 0 !important;
-			  margin: 0 !important;
-			  font-family: 'Noto Sans JP';
-		}*/
-
-		body { font-family: 'Noto Sans JP', sans-serif; }
-
-
-	</style>
-
 	<body>
 
-		<h1 class="wf-notosansjapanese">出勤簿</h1>
+		<h1 style="font-family: 'M PLUS Rounded 1c', sans-serif;">出勤簿</h1>
 		<div class="name">
 			<div class="wf-notosansjapanese">氏名:{{ user.last_name }}{{ user.first_name }}
 			</div>
@@ -77,7 +37,7 @@
 				<table>
 					<thead>
 						<tr>
-							<th>日付</th>
+							<th class="wf-notosansjapanese">日付</th>
 							<th>出社時間</th>
 							<th>朝の時間外労働</th>
 						</tr>
