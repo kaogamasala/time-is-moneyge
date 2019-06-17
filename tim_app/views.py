@@ -768,19 +768,24 @@ class GeneratePdfView(LoginRequiredMixin, OnlyYouMixin, View):
 			'paid_leave_list_pdf': paid_leave_list_pdf,
 			},request) 
 		font_config = FontConfiguration()
-
-		css = CSS(string='''
-			@font-face {
-			font-family: 'M PLUS Rounded 1c', sans-serif;
-			src: url("../fonts/MPLUSRounded1c-Black.ttf");
-			}
-			body { font-family: 'M PLUS Rounded 1c', sans-serif; }''', font_config=font_config)
-
 		pdf_file = HTML(string=html_str).write_pdf(
-			stylesheets=[css],
-			font_config=font_config
-			)
+			stylesheets=[
+        		CSS('./static/tim_app/css/generate_pdf.css')
+        		 ], font_config=font_config
+        	)
 
+		# css = CSS(string='''
+		# 	@font-face {
+		# 	font-family: 'M PLUS Rounded 1c', sans-serif;
+		# 	src: url("../fonts/MPLUSRounded1c-Black.ttf");
+		# 	}
+		# 	''', font_config=font_config)
+
+		# pdf_file = HTML(string=html_str).write_pdf(
+		# 	stylesheets=[css],
+		# 	font_config=font_config
+		# 	)
+		
 		response = HttpResponse(pdf_file, content_type='application/pdf')
 		response['Content-Disposition'] = 'filename="work_of_thismonth.pdf"'
 
