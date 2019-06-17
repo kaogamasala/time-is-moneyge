@@ -22,6 +22,7 @@ from django.template.loader import render_to_string
 from weasyprint import HTML, CSS
 import tempfile
 from django.template.loader import get_template
+from weasyprint.fonts import FontConfiguration
 
 from itertools import chain #queryset結合
 from operator import attrgetter #結合したquerysetをソート
@@ -766,10 +767,11 @@ class GeneratePdfView(LoginRequiredMixin, OnlyYouMixin, View):
 			'total_overtime_of_thismonth': total_overtime_of_thismonth,
 			'paid_leave_list_pdf': paid_leave_list_pdf,
 			},request) 
-		pdf_file = HTML(string=html_str, encoding='utf-8').write_pdf(
+		font_config = FontConfiguration()
+		pdf_file = HTML(string=html_str).write_pdf(
 			stylesheets=[
         		CSS('./static/tim_app/css/generate_pdf.css')
-        		 ],
+        		 ], font_config=font_config
         	)
 		response = HttpResponse(pdf_file, content_type='application/pdf')
 		response['Content-Disposition'] = 'filename="work_of_thismonth.pdf"'
