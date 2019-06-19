@@ -65,15 +65,15 @@ class CustomUser(AbstractUser):
         null=False,
         )
     email = models.EmailField('メールアドレス', unique=True)
-    # username = models.CharField(
-    #     'ユーザー名',
-    #     max_length=150,
-    #     blank=True,
-    #     null=True,
-    #     help_text="半角アルファベット、半角数字、@/./+/-/_で150文字以下にしてください。",
-    #     validators=[AbstractUser.username_validator],
-    #     )
-    #age = models.IntegerField('年齢', blank=True, null=True)
+    username = models.CharField(
+        'ユーザー名',
+        max_length=150,
+        blank=True,
+        null=True,
+        help_text="半角アルファベット、半角数字、@/./+/-/_で150文字以下にしてください。",
+        validators=[AbstractUser.username_validator],
+        )
+    # age = models.IntegerField('年齢', blank=True, null=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
