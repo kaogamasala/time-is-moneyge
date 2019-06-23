@@ -9,7 +9,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
   	<!-- google fonts -->
-	<link href="https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c&display=swap" rel="stylesheet">
+	<!-- <link href="https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c&display=swap" rel="stylesheet"> -->
 
 	<!-- ↓weasyprintはTemplate内で直接指定しているCSSはWeasyPrint経由だと参照されないので注意。 -->
 	<link rel="stylesheet" type="text/css" href="{% static 'tim_app/css/generate_pdf.css' %}">
@@ -21,7 +21,7 @@
 
 	<body>
 
-		<h1 style="font-family: 'M PLUS Rounded 1c', sans-serif;">出勤簿</h1>
+		<h1>出勤簿</h1>
 		<div class="name">
 			<div class="wf-notosansjapanese">氏名:{{ user.last_name }}{{ user.first_name }}
 			</div>

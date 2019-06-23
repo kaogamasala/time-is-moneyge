@@ -1,31 +1,31 @@
 @charset "utf-8";
 
-		@font-face {
-			  font-family: 'M PLUS Rounded 1c', sans-serif;
-			  src: url("../fonts/MPLUSRounded1c-Black.ttf");
-		}
-		
-		body { font-family: 'M PLUS Rounded 1c', sans-serif; }
+	@font-face {
+		font-family: 'M PLUS Rounded 1c', sans-serif;
+		src: local('M PLUS Rounded 1c'), url("../../../.fonts/MPLUSRounded1c-Black.ttf") format("truetype");
+	}
+	
+	body { font-family: 'M PLUS Rounded 1c', sans-serif; }
 
-	  	h1 {
-	  		text-align: center;
-	  	}
-	  	#work_of_thismonth{
-	  		display: flex;
-	  		justify-content: space-around;
-	  	}
-	  	#work_of_thismonth > div {
-	  		width: 100%;
-	  	}
-	  	table {
-	  		border-collapse: collapse;
-	  		width: 100%;
-	  	}
-	  	td, th {
-	  		text-align: center;
-	  		border: 1px solid;
-	  		font-size: 12px;
-	  	}
-	  	.name {
-	  		text-align: right;
-	  	}
+  	h1 {
+  		text-align: center;
+  	}
+  	#work_of_thismonth{
+  		display: flex;
+  		justify-content: space-around;
+  	}
+  	#work_of_thismonth > div {
+  		width: 100%;
+  	}
+  	table {
+  		border-collapse: collapse;
+  		width: 100%;
+  	}
+  	td, th {
+  		text-align: center;
+  		border: 1px solid;
+  		font-size: 12px;
+  	}
+  	.name {
+  		text-align: right;
+  	}

@@ -160,7 +160,6 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # 拡張ユーザーモデルクラスを作成した場合定義する
 AUTH_USER_MODEL = 'accounts.CustomUser'
 
-#
 
 # local_settings.py読み込み
 try:
