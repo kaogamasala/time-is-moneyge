@@ -2,7 +2,7 @@
 
 	@font-face {
 		font-family: 'M PLUS Rounded 1c', sans-serif;
-		src: url("../fonts/MPLUSRounded1c-Black.ttf") format("truetype");
+		src: url("/static/tim_app/fonts/MPLUSRounded1c-Black.ttf") format("truetype");
 	}
 	
 	body { font-family: 'M PLUS Rounded 1c', sans-serif; }
@@ -30,6 +30,4 @@
   		text-align: right;
   	}
 
-  	.wf-notosansjapanese{ 
-  		background-image: url(../fonts/4.jpg); 
-	} 
+  	

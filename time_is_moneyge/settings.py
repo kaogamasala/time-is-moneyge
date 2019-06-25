@@ -24,7 +24,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['127.0.0.1', '.herokuapp.com', 'timeismoneyge.herokuapp.com']
 
@@ -168,7 +168,7 @@ except ImportError:
     pass
 
 # Debug=Falseの時だけ実行する設定
-if DEBUG:
+if not DEBUG:
     SECRET_KEY = os.environ['SECRET_KEY'] #追加
     import django_heroku
     django_heroku.settings(locals())
