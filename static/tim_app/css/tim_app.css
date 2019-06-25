@@ -28,7 +28,7 @@ td, th {
 
 @font-face {
     font-family: 'M PLUS Rounded 1c', sans-serif;
-    src: local('M PLUS Rounded 1c'), url("../../fonts/MPLUSRounded1c-Black.ttf") format("truetype");
+    src: local('M PLUS Rounded 1c'), url("../fonts/MPLUSRounded1c-Black.ttf") format("truetype");
   }
   
   body { font-family: 'M PLUS Rounded 1c', sans-serif; }
