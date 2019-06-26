@@ -770,7 +770,7 @@ class GeneratePdfView(LoginRequiredMixin, OnlyYouMixin, View):
 		font_config = FontConfiguration()
 		pdf_file = HTML(string=html_str).write_pdf(
 				stylesheets=[
-        			CSS('./static/tim_app/css/generate_pdf.css'),
+        			# CSS('./static/tim_app/css/generate_pdf.css'),
         			CSS(string='''
         				@font-face {
 						font-family: 'M PLUS Rounded 1c';
@@ -778,7 +778,7 @@ class GeneratePdfView(LoginRequiredMixin, OnlyYouMixin, View):
 	  					src: url('https://timeismoneyge.herokuapp.com/app/static/tim_app/fonts/MPLUSRounded1c-Medium.ttf');
 						}
 						body { font-family: 'M PLUS Rounded 1c', sans-serif; }
-						'''),
+						''')
         		 	], font_config=font_config
         		)
 
