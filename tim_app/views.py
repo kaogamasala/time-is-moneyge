@@ -769,10 +769,18 @@ class GeneratePdfView(LoginRequiredMixin, OnlyYouMixin, View):
 			},request) 
 		font_config = FontConfiguration()
 		pdf_file = HTML(string=html_str).write_pdf(
-			stylesheets=[
-        		CSS('./static/tim_app/css/generate_pdf.css')
-        		 ], font_config=font_config
-        	)
+				stylesheets=[
+        			CSS('./static/tim_app/css/generate_pdf.css'),
+     #    			CSS(string='''
+     #    				@font-face {
+					# 	font-family: 'YuMin-Medium';
+					# 	font-weight: 900;
+					# }
+					
+					# body { font-family: 'YuMin-Medium'; }
+					# ''')
+        		 	], font_config=font_config
+        		)
 
 		# css = CSS(string='''
 		# 	@font-face {

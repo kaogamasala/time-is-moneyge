@@ -8,35 +8,45 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-  	<!-- google fonts -->
-	<!-- <link href="https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c&display=swap" rel="stylesheet"> -->
-
 	<!-- ↓weasyprintはTemplate内で直接指定しているCSSはWeasyPrint経由だと参照されないので注意。 -->
-	<link rel="stylesheet" type="text/css" href="{% static 'tim_app/css/generate_pdf.css' %}">
+	<!-- <link rel="stylesheet" type="text/css" href="{% static 'tim_app/css/generate_pdf.css' %}"> -->
 
 
- 	 <title>今月の労働</title>
+ 	<title>今月の労働</title>
+
+ 	<style type="text/css">
+	@font-face {
+		font-family: 'M PLUS Rounded 1c';
+  		font-style: normal;
+	  	src: url('http://127.0.0.1:8000/static/tim_app/fonts/MPLUSRounded1c-Medium.ttf');
+	  	src: url('https://timeismoneyge.herokuapp.com/app/static/tim_app/fonts/MPLUSRounded1c-Medium.ttf');
+	}
+	
+	body { font-family: 'M PLUS Rounded 1c', sans-serif; }
+
+	</style>
 
 	</head>
+
 
 	<body>
 
 		<h1>出勤簿</h1>
 		<div class="name">
-			<div class="wf-notosansjapanese">氏名:{{ user.last_name }}{{ user.first_name }}
+			<div>氏名:{{ user.last_name }}{{ user.first_name }}
 			</div>
-			<div class="wf-notosansjapanese">
+			<div>
 				合計残業時間:{{ total_overtime_of_thismonth }}
 			</div>
 		</div>
 		<br>
 
 		<div id="work_of_thismonth">
-			<div class="wf-notosansjapanese">
+			<div>
 				<table>
 					<thead>
 						<tr>
-							<th class="wf-notosansjapanese">日付</th>
+							<th>日付</th>
 							<th>出社時間</th>
 							<th>朝の時間外労働</th>
 						</tr>
@@ -52,7 +62,7 @@
 					</tbody>
 				</table>
 			</div>
-			<div class="wf-notosansjapanese">
+			<div>
 				<table>
 					<thead>
 						<tr>
@@ -73,8 +83,8 @@
 				</table>
 			</div>
 		</div>
-		<h1 class="wf-notosansjapanese">有給休暇</h1>
-		<div class="wf-notosansjapanese">
+		<h1>有給休暇</h1>
+		<div>
 			<table>
 				<thead>
 					<tr>

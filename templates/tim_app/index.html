@@ -297,6 +297,8 @@
 	</div>
 </div>
 <script type="text/javascript">
+Chart.defaults.global.defaultFontFamily = "'M PLUS Rounded 1c'";
+Chart.defaults.global.defaultFontSize = 16;	
 var ctx = document.getElementById("bar-chart");
 var myRadarChart = new Chart(ctx, {
     type: 'bar',
@@ -320,7 +322,7 @@ var myRadarChart = new Chart(ctx, {
            	},
 			title: {
 		        display: true,
-		        fontSize: 19,
+		        fontSize: 20,
 		        text: '月別残業時間'
 			},
       		scales: {
